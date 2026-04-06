@@ -12,21 +12,37 @@ class Program
 {
     static void Main()
     {
-        User user = new User
+        // 1. Sukuriam kelis vartotojus
+        List<User> users = new List<User>
         {
-            id = 205604043,
-            Vardas = "Tomas",
-            Gmail = "Hotto@gmail.com"
+            new User { id = 1, Vardas = "Tomas", Gmail = "tomas@gmail.com" },
+            new User { id = 2, Vardas = "Ieva", Gmail = "ieva@gmail.com" }
         };
 
-        string jsonString = JsonSerializer.Serialize(user, new JsonSerializerOptions
+        // 2. Išsaugom į JSON failą
+        string jsonString = JsonSerializer.Serialize(users, new JsonSerializerOptions
         {
             WriteIndented = true
         });
 
         File.WriteAllText("users.json", jsonString);
+        Console.WriteLine("users.json failas sukurtas!");
 
-        Console.WriteLine("Failas sukurtas!");
-        Console.WriteLine(jsonString);
+        // 3. Nuskaitom failą
+        string jsonFromFile = File.ReadAllText("users.json");
+
+        // 4. Deserialize į List<User>
+        List<User> loadedUsers = JsonSerializer.Deserialize<List<User>>(jsonFromFile);
+
+        // 5. LOOP per visus įrašus
+        Console.WriteLine("\nVisi vartotojai iš users.json:");
+
+        foreach (User user in loadedUsers)
+        {
+            Console.WriteLine($"ID: {user.id}");
+            Console.WriteLine($"Vardas: {user.Vardas}");
+            Console.WriteLine($"Gmail: {user.Gmail}");
+            Console.WriteLine("---------------------");
+        }
     }
 }
