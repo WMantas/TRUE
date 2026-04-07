@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 // Pagrindinė klasė
 class Vartotojas
@@ -16,12 +13,11 @@ class AdminVartotojas : Vartotojas
 {
     public string Lygis { get; set; }
 }
-
+// Paveldimos klasės
 class PaprastasVartotojas : Vartotojas
 {
     public int Taskai { get; set; }
 }
-
 class VartotojoWrapper
 {
     public string Tipas { get; set; }
@@ -68,6 +64,14 @@ class Program
                 var p = w.Duomenys.Deserialize<PaprastasVartotojas>();
                 Console.WriteLine($"[PAPRASTAS] {p.Vardas} ({p.Gmail}) - Taskai: {p.Taskai}");
             }
+        }
+        // Papildoma dalis pagal užduotį - išvedam visus paprastus vartotojus iš pirmo failo
+        Console.WriteLine("\n Paprasti vartotojai iš vartotojai.json ");
+
+        var nuskaitytiVartotojai = JsonSerializer.Deserialize<List<Vartotojas>>(File.ReadAllText("vartotojai.json"));
+        foreach (var v in nuskaitytiVartotojai)
+        {
+            Console.WriteLine($"ID: {v.Id}, Vardas: {v.Vardas}, Gmail: {v.Gmail}");
         }
     }
 }
